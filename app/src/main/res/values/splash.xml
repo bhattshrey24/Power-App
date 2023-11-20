@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="APP.Starting.Theme" parent="Theme.SplashScreen"><!-- this comes from splash screen dependency that
+    we added in gradle-->
+        <item name="windowSplashScreenBackground">#000</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/splash_inset</item> <!-- see this drawable because it's
+         not directly a image but we wrapped the image using drawable in order to give space around it -->
+        <item name="postSplashScreenTheme">@style/Theme.PowerApp</item> <!-- this will basically load this theme after showing splash -->
+    </style>
+</resources>
