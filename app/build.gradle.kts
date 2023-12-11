@@ -12,7 +12,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.powerapp"
-        minSdk = 24
+        minSdk = 26 // changed from 24 to 26
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -103,5 +103,16 @@ dependencies {
 
     // Kotlin Extensions and Coroutines support for Room
     implementation("androidx.room:room-ktx:$room_version")
+
+
+    // Calender and Clock dependency
+    val version = "1.1.0"
+    implementation ("com.maxkeppeler.sheets-compose-dialogs:core:$version")
+    // COLOR
+    implementation ("com.maxkeppeler.sheets-compose-dialogs:color:$version")
+    // CALENDAR
+    implementation ("com.maxkeppeler.sheets-compose-dialogs:calendar:$version")
+    // CLOCK
+    implementation ("com.maxkeppeler.sheets-compose-dialogs:clock:$version")
 
 }

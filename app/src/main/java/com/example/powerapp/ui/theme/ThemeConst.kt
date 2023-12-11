@@ -11,12 +11,13 @@ import com.example.powerapp.R
 object ThemeConst{
     object MyColors {
         val Background  = Color(0xFF000000)
-        val SurfaceColor = Color(0xFF2C2C2C)
-        val PrimaryColor = Color(0xFF4642FF)
-        val TextColorPrimary = Color(0xFFFFFFFF)
-        val TextColorSecondary = Color(0xFF706F6F)
-        val TertiaryColor  = Color(0xFFD86321)
-        val FourthColor  = Color(0xFFFFE924)
+        val SurfacePri = Color(0xFF2C2C2C)
+        val SurfaceSec = Color(0xFF4642FF)
+        val SurfaceTer = Color(0xFFD86321)
+        val TextPri = Color(0xFFFFFFFF)
+        val TextSec = Color(0xFF4642FF)
+        val TextTer = Color(0xFFFF0606)
+        val ErrorCol = Color(0xFFFF0606)
     }
     object CornerRadius{
         val extraSmall = 6.dp

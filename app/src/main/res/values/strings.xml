@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Power App</string>
+    <string name="welcome_big">Welcome To Our Family</string>
+    <string name="welcome_small">Your Workout Tracking Buddy</string>
 </resources>
