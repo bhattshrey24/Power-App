@@ -34,9 +34,9 @@ object ThemeConst{
         val extraLarge = 12.dp
     }
     object FontSize{
-        val headingLarge = 24.sp
-        val headingMedium= 18.sp
-        val headingSmall= 14.sp
+        val headingLarge = 34.sp
+        val headingMedium= 30.sp
+        val headingSmall= 28.sp
         val titleLarge = 24.sp
         val titleMedium= 18.sp
         val titleSmall= 14.sp
