@@ -4,9 +4,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import androidx.navigation.navigation
+import com.example.powerapp.domain.models.Exercise
+import com.example.powerapp.other.Converters
 import com.example.powerapp.presentation.navigation.routes.HomeGraphScreens
 import com.example.powerapp.presentation.navigation.routes.MyGraph
 import com.example.powerapp.presentation.navigation.routes.ProfileGraphScreens
@@ -25,6 +29,8 @@ import com.example.powerapp.presentation.screens.StartWorkoutScreen
 import com.example.powerapp.presentation.screens.TemplateDetailScreen
 import com.example.powerapp.presentation.screens.TemplateScreen
 import com.example.powerapp.presentation.screens.WorkoutHistoryScreen
+import com.example.powerapp.presentation.screens.convertListToGroups
+import com.example.powerapp.presentation.screens.dummy.dummyListOfExercises
 import com.example.powerapp.presentation.screens.tabs.HomeTabScreen
 import com.example.powerapp.presentation.screens.tabs.ProfileTabScreen
 import com.example.powerapp.presentation.screens.tabs.RunningTabScreen
@@ -60,10 +66,49 @@ fun BottomNavGraph(navController: NavHostController, modifier: Modifier) {
 fun NavGraphBuilder.homeNavGraph(navController: NavHostController) {
     navigation(
         route = MyGraph.HOMEGRAPH,
-        startDestination = HomeGraphScreens.StartWorkoutScreen.route
+        startDestination = "${HomeGraphScreens.StartWorkoutScreen.route}/{}",
+        //startDestination = HomeGraphScreens.ListOfExerciseScreen.route
     ) {
-        composable(route = HomeGraphScreens.StartWorkoutScreen.route) {
-            StartWorkoutScreen(onClick1 = {}, onClick2 = {}, onClick3 = {})
+        composable(
+            route = "${HomeGraphScreens.StartWorkoutScreen.route}/{my_param}",
+            arguments = listOf(
+                navArgument("my_param") { type = NavType.StringType }
+            )
+        ) {
+            val param = it.arguments?.getString("my_param") ?: ""
+            var list = emptyList<Exercise>()
+
+            if (param.isNotEmpty()) {
+                list = Converters.convertJsonToListOfExercise(
+                    param.removePrefix("{").removeSuffix("}") // this remove pre and suffix
+                // because when we convert our json to parameter then somehow android is adding extra {}
+                // so we are removing it so that gson can convert it back to List<Exercise>
+                )
+            }
+            StartWorkoutScreen(
+                list = list,
+                onFinish = {},
+                onClickCancel = {
+
+                }, onClickAddExercise = {
+                    navController.navigate(HomeGraphScreens.ListOfExerciseScreen.route)
+                })
+        }
+        composable(route = HomeGraphScreens.ListOfExerciseScreen.route) {
+            ListOfExerciseScreen(
+                onCreateNew = {},
+                onAdd = {
+                    val json = Converters.convertListOfExerciseToJson(it)
+                    navController.navigate("${HomeGraphScreens.StartWorkoutScreen.route}/{$json}") {
+                        popUpTo(HomeGraphScreens.ListOfExerciseScreen.route) {
+                            inclusive = true
+                        }
+                    }
+                },
+                list = convertListToGroups(
+                    dummyListOfExercises
+                )
+            )
         }
         composable(route = HomeGraphScreens.MyTemplateScreen.route) {
             MyTemplateScreen(onClick1 = {}, onClick2 = {}, onClick3 = {})
@@ -77,9 +122,7 @@ fun NavGraphBuilder.homeNavGraph(navController: NavHostController) {
         composable(route = HomeGraphScreens.TemplateDetailScreen.route) {
             TemplateDetailScreen(onClick1 = {}, onClick2 = {}, onClick3 = {})
         }
-        composable(route = HomeGraphScreens.ListOfExerciseScreen.route) {
-            ListOfExerciseScreen(onClick1 = {}, onClick2 = {}, onClick3 = {})
-        }
+
         composable(route = HomeGraphScreens.CreateExerciseScreen.route) {
             CreateExerciseScreen(onClick1 = {}, onClick2 = {}, onClick3 = {})
         }

@@ -16,9 +16,6 @@ import com.example.powerapp.ui.theme.ThemeConst
 
 
 // todo
-//  Create home tab UI
-//  Create Start Empty Screen
-//  Create List of Exercise screen
 //  Note : In domain model use localDateTime and in DTO model use timeStamp
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

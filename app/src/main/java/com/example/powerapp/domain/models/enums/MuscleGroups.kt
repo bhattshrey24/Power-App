@@ -6,5 +6,6 @@ enum class MuscleGroups {
     Bicep,
     Triceps,
     Shoulder,
-    Core
+    Core,
+    Legs
 }

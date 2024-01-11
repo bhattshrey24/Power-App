@@ -1,11 +1,8 @@
 package com.example.powerapp.domain.models
 
-import com.example.powerapp.domain.models.enums.Weight
 
 data class Exercise (
     val exerciseId:Int,
+    val history: List<SetHistory>,
     val exerciseDetails: ExerciseDetails,
-    val reps:Int,
-    val sets:Int,
-    val weight: Weight
 )

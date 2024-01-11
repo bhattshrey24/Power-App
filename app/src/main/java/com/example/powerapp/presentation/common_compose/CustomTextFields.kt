@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
@@ -20,8 +19,6 @@ import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.outlined.DateRange
 import androidx.compose.material.icons.outlined.Face
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -32,11 +29,8 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
@@ -53,12 +47,10 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TextFieldPrimary(
     isError: Boolean = false,
-    errorMessage: String = "",
     modifier: Modifier = Modifier,
     containerColor: Color = Color.Transparent,
     borderColor: Color = Color.White,
@@ -84,7 +76,7 @@ fun TextFieldPrimary(
     value = text,
     leadingIcon = leadingIcon,
     modifier = if (!isError) {
-        Modifier
+        modifier
             .fillMaxWidth()
             .border(
                 width = borderRadius,
@@ -92,7 +84,7 @@ fun TextFieldPrimary(
                 shape = RoundedCornerShape(cornerRadius)
             )
     } else {
-        Modifier
+        modifier
             .fillMaxWidth()
             .border(
                 width = borderRadius,
@@ -199,19 +191,21 @@ fun MyEditCompose() {
 //            isExpanded = expanded.value
 //        )
 
-    //  TextFieldWithDropDown(text = "", onTextChange = {})
-
-//        val pickedDate = remember {
-//            mutableStateOf(LocalDate.now())
+    TextFieldWithDropDown(
+        text = "",
+        onTextChange = {},
+        keyboardActions = KeyboardActions(onDone = null)
+    )
+//    val pickedDate = remember {
+//        mutableStateOf(LocalDate.now())
+//    }
+//    TextFieldWithCalender(
+//        pickedDate = LocalDate.now(),
+//        onDateSelect =
+//        CalendarSelection.Date { date ->
+//            pickedDate.value = date
 //        }
-//        TextFieldWithCalender(
-//            pickedDate = LocalDate.now(),
-//            onDateSelect =
-//            CalendarSelection.Date { date ->
-//                pickedDate.value = date
-//            }
-//        )
-
+//    )
 
 }
 
@@ -229,7 +223,7 @@ fun TextFieldWithDropDown(
     val expanded = remember { mutableStateOf(false) }
     val selectedText = remember { mutableStateOf(listOfItems[0]) }
     Row(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth().height(78.dp),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         CustomTextFieldWithError(

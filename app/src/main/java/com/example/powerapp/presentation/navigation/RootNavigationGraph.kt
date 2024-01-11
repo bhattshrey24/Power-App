@@ -13,7 +13,9 @@ fun RootNavigationGraph(navController: NavHostController) {
     NavHost(
         navController = navController,
         route = MyGraph.ROOT,
-        startDestination = RootScreens.WelcomeScreen.route
+      //  startDestination = RootScreens.WelcomeScreen.route
+        startDestination = RootScreens.HomeScreen.route
+
     ) {
 
         composable(route = RootScreens.WelcomeScreen.route) {
