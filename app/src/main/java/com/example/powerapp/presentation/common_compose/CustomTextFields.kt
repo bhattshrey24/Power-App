@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
@@ -19,6 +20,7 @@ import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.outlined.DateRange
 import androidx.compose.material.icons.outlined.Face
+import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.Divider
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -111,6 +113,54 @@ fun TextFieldPrimary(
     ),
     textStyle = TextStyle(color = valueTextColor)
 )
+
+@Preview
+@Composable
+fun SearchTextFieldPreview() {
+    SearchTextField(text = "", onTextChange = {})
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun SearchTextField(
+    text: String,
+    modifier: Modifier = Modifier
+        .fillMaxWidth()
+        .padding(start = 20.dp, end = 20.dp),
+    containerColor: Color = ThemeConst.MyColors.SurfacePri,
+    valueTextColor: Color = Color.White,
+    onTextChange: (String) -> Unit
+) {
+    TextField(
+        value = text,
+        onValueChange = onTextChange,
+        modifier = modifier,
+        label = {
+            Text(
+                text = "Search",
+                color = ThemeConst.MyColors.TextPriVariant
+            )
+        },
+        colors = TextFieldDefaults.textFieldColors(
+            textColor = valueTextColor,
+            containerColor = containerColor,
+            cursorColor = Color.White,
+            focusedIndicatorColor = Color.Transparent,
+            unfocusedIndicatorColor = Color.Transparent,
+            disabledIndicatorColor = Color.Transparent,
+            focusedLabelColor = Color.White,
+            unfocusedLabelColor = Color.White
+        ),
+        leadingIcon = {
+            Icon(
+                imageVector = Icons.Outlined.Search,
+                contentDescription = "Search button",
+                tint = Color.White
+            )
+        },
+        shape = RoundedCornerShape(8.dp)
+    )
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -223,7 +273,9 @@ fun TextFieldWithDropDown(
     val expanded = remember { mutableStateOf(false) }
     val selectedText = remember { mutableStateOf(listOfItems[0]) }
     Row(
-        modifier = modifier.fillMaxWidth().height(78.dp),
+        modifier = modifier
+            .fillMaxWidth()
+            .height(78.dp),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         CustomTextFieldWithError(

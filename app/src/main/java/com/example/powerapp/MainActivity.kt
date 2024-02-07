@@ -16,6 +16,8 @@ import com.example.powerapp.ui.theme.ThemeConst
 
 
 // todo
+//  Make UI Screens
+//  Make data class for Template
 //  Note : In domain model use localDateTime and in DTO model use timeStamp
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

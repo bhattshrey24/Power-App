@@ -4,6 +4,6 @@ import java.time.LocalDate
 
 
 data class SetHistory (
-    val sets:List<Sets>,
+    val sets:List<Set>,
     val date: LocalDate
 )

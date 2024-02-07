@@ -51,7 +51,6 @@ fun ListOfExerciseScreen(
     list: List<Pair<String, List<Exercise>>>
 ) {
     var searchTxt by rememberSaveable { mutableStateOf("") }
-
     val selectedExercises = mutableListOf<Exercise>()
 
     Surface(
@@ -140,8 +139,8 @@ fun ListOfExerciseScreen(
                     )
                     for (exercise in pair.second) {
                         ExerciseTile(
-                            exerciseName = exercise.exerciseDetails.exerciseName,
-                            category = exercise.exerciseDetails.primaryMuscleGroup.toString()
+                            exerciseName = exercise.exerciseName,
+                            category = exercise.primaryMuscleGroup.toString()
                         ) {
                             if (selectedExercises.contains(exercise)) {
                                 selectedExercises.remove(exercise)
@@ -159,7 +158,7 @@ fun ListOfExerciseScreen(
 
 fun convertListToGroups(list: List<Exercise>): List<Pair<String, List<Exercise>>> {
     val listOfPair = list.groupBy {
-        it.exerciseDetails.primaryMuscleGroup.toString()
+        it.primaryMuscleGroup.toString()
     }.toList()
 
     // Sort the list based on keys
@@ -167,7 +166,7 @@ fun convertListToGroups(list: List<Exercise>): List<Pair<String, List<Exercise>>
 
     // Sort the values associated with each key
     val sortedPairsWithSortedValues = sortedPairs.map { (key, values) ->
-        key to values.sortedBy { it.exerciseDetails.exerciseName }
+        key to values.sortedBy { it.exerciseName }
     }
     return sortedPairsWithSortedValues
 }

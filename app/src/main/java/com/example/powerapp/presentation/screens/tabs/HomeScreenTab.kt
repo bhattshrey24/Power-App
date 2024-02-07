@@ -31,14 +31,18 @@ import com.example.powerapp.presentation.common_compose.HomeTabButton
 @Preview
 @Composable
 fun HomeTabScreenPreview() {
-    HomeTabScreen(onClick1 = {}, onClick2 = {}, onClick3 = {})
+    HomeTabScreen(
+        onClickStartWorkout = {},
+        onClickMyTemplates = {},
+        onClickExploreTemplate = {}
+    )
 }
 
 @Composable
 fun HomeTabScreen(
-    onClick1: () -> Unit,
-    onClick2: () -> Unit,
-    onClick3: () -> Unit
+    onClickStartWorkout: () -> Unit,
+    onClickMyTemplates: () -> Unit,
+    onClickExploreTemplate: () -> Unit
 ) {
     Surface(color = ThemeConst.MyColors.Background) {
         Column(
@@ -61,7 +65,7 @@ fun HomeTabScreen(
             )
 
             Button(
-                onClick = onClick1,
+                onClick = onClickStartWorkout,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 20.dp),
@@ -99,9 +103,8 @@ fun HomeTabScreen(
             )
 
             HomeTabButton(text = "My Templates", icon = Icons.Outlined.DateRange) {
-                onClick2()
+                onClickMyTemplates() // Pass template
             }
-            //Spacer(modifier = Modifier.height(10.dp))
             Divider(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -109,7 +112,7 @@ fun HomeTabScreen(
                 color = Color.White
             )
             HomeTabButton(text = "Explore Templates", icon = Icons.Outlined.DateRange) {
-                onClick3()
+                onClickExploreTemplate()
             }
 
         }

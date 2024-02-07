@@ -6,17 +6,22 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.Check
 import androidx.compose.material.icons.outlined.DateRange
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.KeyboardArrowRight
+import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -39,8 +44,297 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.powerapp.R
 import com.example.powerapp.domain.models.Exercise
+import com.example.powerapp.domain.models.Set
+import com.example.powerapp.domain.models.Template
 import com.example.powerapp.presentation.screens.dummy.dummyListOfExercises
+import com.example.powerapp.presentation.screens.dummy.dummyTemplateList
 import com.example.powerapp.ui.theme.ThemeConst
+import java.time.DayOfWeek
+
+@Preview
+@Composable
+fun ExploreRoutineTilePreview() {
+    ExploreRoutineTile(dummyTemplateList[0])
+}
+
+@Composable
+fun ExploreRoutineTile(template: Template) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 20.dp)
+    ) {
+        Surface(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 10.dp, end = 10.dp),
+            color = ThemeConst.MyColors.SurfacePri,
+            shape = RoundedCornerShape(8.dp)
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(
+                        all = 10.dp
+                    ),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = template.name,
+                    style = TextStyle(
+                        fontSize = 18.sp,
+                        color = ThemeConst.MyColors.TextPri,
+                        fontWeight = FontWeight.Bold
+                    )
+                )
+                Text(
+                    text = "${template.numOfDays} Days",
+                    style = TextStyle(
+                        fontSize = 14.sp,
+                        color = ThemeConst.MyColors.TextPri
+                    )
+                )
+                Icon(
+                    imageVector = Icons.Outlined.Add,
+                    contentDescription = "Add",
+                    tint = Color.White,
+                    modifier = Modifier
+                        .height(18.dp)
+                        .width(18.dp)
+                )
+
+            }
+
+        }
+        Spacer(modifier = Modifier.height(20.dp))
+        LazyRow(
+            modifier = Modifier.padding(start = 10.dp)
+        ) {
+            val list = template.days.sortedBy {it.day}
+            items(list) { templateDay ->
+                ExploreRoutineDayTile(templateDay.day, templateDay.name)
+                Spacer(modifier = Modifier.width(20.dp))
+            }
+        }
+        Spacer(modifier = Modifier.height(15.dp))
+    }
+}
+
+@Preview
+@Composable
+fun PreviewExploreTemplateDayTile() {
+    ExploreRoutineDayTile(
+        DayOfWeek.MONDAY,
+        "Pull"
+    )
+}
+
+@Composable
+fun ExploreRoutineDayTile(
+    day: DayOfWeek,
+    name: String
+) {
+    Surface(
+        color = ThemeConst.MyColors.SurfacePri,
+        modifier = Modifier
+            .height(100.dp)
+            .width(150.dp),
+        shape = RoundedCornerShape(10.dp)
+    ) {
+        Column {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(
+                        start = 8.dp,
+                        end = 8.dp,
+                        top = 8.dp
+                    ),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(
+                    text = day.name,
+                    style = TextStyle(
+                        fontSize = 8.sp,
+                        color = ThemeConst.MyColors.TextPri
+                    )
+                )
+                Icon(
+                    imageVector = Icons.Outlined.Add,
+                    contentDescription = "Add",
+                    tint = Color.White,
+                    modifier = Modifier
+                        .height(10.dp)
+                        .width(10.dp)
+                )
+            }
+            Spacer(modifier = Modifier.height(15.dp))
+            Text(
+                text = name,
+                style = TextStyle(
+                    color = ThemeConst.MyColors.TextPri,
+                    fontSize = 28.sp
+                ),
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth()
+            )
+        }
+    }
+}
+
+
+@Preview
+@Composable
+fun TemplateDayTilePreview() {
+    val list = listOf(
+        dummyListOfExercises[0] to listOf<Set>(
+            Set(weight = 10, reps = 10),
+            Set(weight = 20, reps = 12),
+            Set(weight = 30, reps = 15)
+        ),
+        dummyListOfExercises[1] to listOf<Set>(
+            Set(weight = 12, reps = 20),
+            Set(weight = 22, reps = 22),
+            Set(weight = 32, reps = 25)
+        )
+    )
+    TemplateDayTile(
+        day = DayOfWeek.MONDAY,
+        name = "Chest",
+        listOfExercise = list
+    ){}
+
+}
+
+@Composable
+fun TemplateDayTile(
+    day: DayOfWeek,
+    name: String,
+    listOfExercise: List<Pair<Exercise, List<Set>>>,
+    onClick: () -> Unit
+) {
+    Surface(
+        color = ThemeConst.MyColors.SurfacePri,
+        shape = RoundedCornerShape(8.dp),
+        modifier = Modifier
+            .padding(start = 20.dp, end = 20.dp)
+            .clickable { onClick() }
+    ) {
+        Column(
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Spacer(modifier = Modifier.height(10.dp))
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 15.dp, end = 15.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = name, style = TextStyle(
+                        color = ThemeConst.MyColors.TextPri,
+                        fontSize = 26.sp
+                    )
+                )
+                Surface(
+                    color = ThemeConst.MyColors.Background,
+                    shape = RoundedCornerShape(5.dp)
+                ) {
+                    Text(
+                        text = day.toString(), style = TextStyle(
+                            fontSize = 7.sp, color = ThemeConst.MyColors.TextPri
+                        ),
+                        modifier = Modifier.padding(4.dp)
+                    )
+                }
+            }
+            Spacer(modifier = Modifier.height(10.dp))
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 15.dp, end = 15.dp, bottom = 15.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Column {
+                    for (entry in listOfExercise) {
+                        val number = entry.second.size
+                        val exerciseName = entry.first.exerciseName
+                        Text(
+                            text = "$number   X   $exerciseName",
+                            modifier = Modifier.padding(bottom = 4.dp),
+                            style = TextStyle(
+                                color = ThemeConst.MyColors.TextPri,
+                                fontSize = 10.sp
+                            )
+                        )
+                    }
+                }
+                Icon(
+                    imageVector = Icons.Outlined.Delete,
+                    contentDescription = "Delete Icon",
+                    tint = Color.White,
+                    modifier = Modifier
+                        .height(28.dp)
+                        .width(28.dp)
+                )
+            }
+            Spacer(modifier = Modifier.height(10.dp))
+        }
+    }
+}
+
+@Preview
+@Composable
+fun CreateExerciseTilePreview() {
+    CreateExerciseTile(
+        headText = "Primary Muscle Group",
+        subHeadText = "Back"
+    )
+}
+
+@Composable
+fun CreateExerciseTile(
+    modifier: Modifier = Modifier
+        .fillMaxWidth()
+        .padding(
+            start = 10.dp,
+            end = 10.dp
+        ),
+    headText: String,
+    subHeadText: String
+) {
+    Row(
+        modifier = modifier,
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Column {
+            Text(
+                text = headText,
+                style = TextStyle(
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold
+                ),
+                color = ThemeConst.MyColors.TextPri,
+                modifier = Modifier.padding(bottom = 10.dp)
+            )
+            Text(
+                text = subHeadText,
+                style = TextStyle(fontSize = 14.sp),
+                color = ThemeConst.MyColors.TextPriVariant,
+            )
+        }
+        Icon(
+            imageVector = Icons.Outlined.KeyboardArrowRight,
+            tint = Color.White,
+            contentDescription = ""
+        )
+    }
+}
+
 
 @Preview
 @Composable
@@ -221,7 +515,7 @@ fun WorkoutExerciseTile(
             ) {
                 Row(horizontalArrangement = Arrangement.SpaceBetween) {
                     Text(
-                        text = exercise.exerciseDetails.exerciseName,
+                        text = exercise.exerciseName,
                         color = ThemeConst.MyColors.TextPri,
                         modifier = Modifier.padding(start = 20.dp, top = 4.dp, bottom = 4.dp),
                         style = TextStyle(
@@ -265,29 +559,10 @@ fun WorkoutExerciseTile(
                 modifierTxt = Modifier
                     .fillMaxWidth()
                     .padding(top = 2.dp, bottom = 2.dp),
-                buttonText ="Add Set"
+                buttonText = "Add Set"
             ) {
 
             }
-//            Surface(
-//                color = ThemeConst.MyColors.SurfacePri,
-//                modifier = Modifier
-//                    .fillMaxWidth()
-//                    .padding(top = 10.dp, bottom = 10.dp)
-//                    .clickable {
-//                        counter++
-//                    },
-//            ) {
-//                Text(
-//                    text = "Add Set",
-//                    modifier = Modifier
-//                        .fillMaxWidth()
-//                        .padding(top = 2.dp, bottom = 2.dp),
-//                    color = ThemeConst.MyColors.TextPri,
-//                    style = TextStyle(fontSize = ThemeConst.FontSize.displayLarge),
-//                    textAlign = TextAlign.Center
-//                )
-//            }
         }
     }
 }
@@ -298,7 +573,8 @@ fun SetTile(
     previous: String,
     weight: String,
     reps: String,
-    isHeader: Boolean
+    isHeader: Boolean,
+    isTemplate: Boolean = false
 ) {
     Row(
         modifier = Modifier
@@ -356,24 +632,158 @@ fun SetTile(
                 shape = RoundedCornerShape(ThemeConst.CornerRadius.small)
             ) {
                 Icon(
-                    imageVector = Icons.Outlined.Check,
-                    tint = Color.Transparent,
+                    imageVector = if (!isTemplate) Icons.Outlined.Check else Icons.Outlined.Lock,
+                    tint = Color.White,
                     contentDescription = "Placeholder Icon",
                     modifier = Modifier.padding(all = 2.dp)
                 )
             }
         } else {
             Surface(
-                color = ThemeConst.MyColors.SurfacePri,
+                color = if (!isTemplate) ThemeConst.MyColors.SurfacePri else Color.Transparent,
                 shape = RoundedCornerShape(ThemeConst.CornerRadius.small)
             ) {
                 Icon(
-                    imageVector = Icons.Outlined.Check,
+                    imageVector = if (!isTemplate) Icons.Outlined.Check else Icons.Outlined.Lock,
                     tint = Color.White,
                     contentDescription = "My Icon 2",
                     modifier = Modifier.padding(all = 2.dp)
                 )
             }
         }
+    }
+}
+
+@Preview
+@Composable
+fun TemplateExerciseTilePreview() {
+    val templateDay = dummyTemplateList[0].days[0].listOfExercises[0]
+    TemplateExerciseTile(
+        exercise = templateDay
+    )
+}
+
+@Composable
+fun TemplateExerciseTile(
+    exercise: Pair<Exercise, List<Set>>
+) {
+    var counter by rememberSaveable { mutableIntStateOf(1) }
+    Surface(
+        modifier = Modifier.padding(
+            start = 20.dp,
+            end = 20.dp,
+            top = 10.dp,
+            bottom = 10.dp
+        ),
+        color = Color.Transparent
+    ) {
+        Column(
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Surface(
+                color = ThemeConst.MyColors.SurfacePri,
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(ThemeConst.CornerRadius.small)
+            ) {
+                Row(horizontalArrangement = Arrangement.SpaceBetween) {
+                    Text(
+                        text = exercise.first.exerciseName,
+                        color = ThemeConst.MyColors.TextPri,
+                        modifier = Modifier.padding(start = 20.dp, top = 4.dp, bottom = 4.dp),
+                        style = TextStyle(
+                            fontSize = ThemeConst.FontSize.bodyMedium,
+                            fontWeight = FontWeight.Bold
+                        )
+                    )
+                    Icon(
+                        imageVector = Icons.Outlined.Delete,
+                        contentDescription = "Delete Icon",
+                        tint = Color.White,
+                        modifier = Modifier.padding(end = 10.dp, top = 2.dp, bottom = 2.dp)
+                    )
+                }
+            }
+
+            TemplateSetTile(
+                setNumber = "Sets",
+                weight = "Kg",
+                reps = "Reps",
+                isHeader = true
+            )
+            var count = counter
+            for (sets in exercise.second) {
+                TemplateSetTile(
+                    setNumber = count.toString(),
+                    weight = sets.weight.toString(),
+                    reps = sets.reps.toString(),
+                    isHeader = false
+                )
+                count++
+            }
+//            ButtonSecondary(
+//                modifierBtn = Modifier
+//                    .fillMaxWidth()
+//                    .padding(top = 10.dp, bottom = 10.dp)
+//                    .clickable {
+//                        counter++
+//                    },
+//                modifierTxt = Modifier
+//                    .fillMaxWidth()
+//                    .padding(top = 2.dp, bottom = 2.dp),
+//                buttonText = "Add Set"
+//            ) {
+//
+//            }
+        }
+    }
+}
+
+@Composable
+fun TemplateSetTile(
+    setNumber: String,
+    weight: String,
+    reps: String,
+    isHeader: Boolean,
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(
+                top = 4.dp,
+                bottom = 4.dp
+            ),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            text = setNumber,
+            color = ThemeConst.MyColors.TextPri,
+            style = TextStyle(
+                fontSize = ThemeConst.FontSize.displayMedium,
+                fontWeight = if (isHeader) FontWeight.Bold else FontWeight.Normal
+            ),
+            textAlign = TextAlign.Center,
+            modifier = Modifier.weight(1f)
+        )
+        Text(
+            text = weight,
+            color = ThemeConst.MyColors.TextPri,
+            style = TextStyle(
+                fontSize = ThemeConst.FontSize.displayMedium,
+                fontWeight = if (isHeader) FontWeight.Bold else FontWeight.Normal
+            ),
+            textAlign = TextAlign.Center,
+            modifier = Modifier.weight(1f)
+        )
+        Text(
+            text = reps,
+            color = ThemeConst.MyColors.TextPri,
+            style = TextStyle(
+                fontSize = ThemeConst.FontSize.displayMedium,
+                fontWeight = if (isHeader) FontWeight.Bold else FontWeight.Normal
+            ),
+            textAlign = TextAlign.Center,
+            modifier = Modifier.weight(1f)
+        )
     }
 }

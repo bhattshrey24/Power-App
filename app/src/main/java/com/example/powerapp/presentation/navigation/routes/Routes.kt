@@ -51,7 +51,6 @@ sealed class HomeGraphScreens(val route: String) {
     object CreateExerciseScreen : HomeGraphScreens("create_exercise_screen")
     object AddOrEditTemplateScreen : HomeGraphScreens("add_or_edit_template_screen")
 
-
 }
 sealed class RunningGraphScreens(val route: String) {
     object RunningScreen : RunningGraphScreens("running_screen")

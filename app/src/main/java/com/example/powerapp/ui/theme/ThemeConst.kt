@@ -20,6 +20,7 @@ object ThemeConst {
         val TextTer = Color(0xFFFF0606)
         val SelectedColor = Color(0xFF49BB4E)
         val ErrorCol = Color(0xFFFF0606)
+        val iconColor = Color(0xFFFFFFFF)
     }
 
     object CornerRadius {
@@ -31,11 +32,13 @@ object ThemeConst {
     }
 
     object Padding {
-        val extraSmall = 4.dp
-        val small = 6.dp
-        val medium = 8.dp
-        val large = 10.dp
-        val extraLarge = 12.dp
+        val extraSmall = 5.dp
+        val small = 10.dp
+        val medium = 15.dp
+        val large = 20.dp
+        val extraLarge = 25.dp
+        val paddingTextStart = 20.dp
+        val paddingTextTop = 60.dp
     }
 
     object FontSize {

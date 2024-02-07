@@ -1,7 +1,7 @@
 package com.example.powerapp.domain.models
 
 
-data class Sets(
+data class Set(
     var weight: Int,
     var reps: Int
 )
